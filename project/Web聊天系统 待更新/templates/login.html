@@ -1,0 +1,23 @@
+{%extends 'master/layout.html' %}
+
+{%block css%}
+
+{% endblock %}
+
+{%block page-content%}
+<div class='container'>
+	<div class="col-xs-5 col-md-3">
+		<form class="form-signin" action='/login/' method="POST">
+			<h2 class="form-signin-heading">Please sign in</h2>
+			<input type="text" name="username" class="input-block-level" placeholder="username">
+			<input type="password" name="password" class="input-block-level" placeholder="password">
+			<button class="btn btn-large btn-primary" type="submit">Sign in</button>
+			<p style="color:red">{{login_error}}</p>
+		</form>
+	</div>
+</div>
+{%endblock%}
+
+{% block js %}
+
+{% endblock %}
