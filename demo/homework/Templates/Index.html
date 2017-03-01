@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<label for='provice'>省：</label>
+	<select id='provice'>
+		<option value='-1'>choice</option>
+	</select>
+	<br/>
+	<select id='city'>
+		<option value='-1'>choice</option>
+	</select>
+	<br/>
+	<select id='county'>
+		<option value='-1'>choice</option>
+	</select>
+	<br/>
+	
+	<input type='button' id='request' value='request'/>
+	<div class='container'></div>
+	<script type="text/javascript" src='/Statics/jquery-1.8.2.js'></script>
+	<script type="text/javascript" >
+		$(function(){
+			Init();
+			
+			$('#provice').change(function(){
+				proviceid=$(this).find('option:selected').val();
+				$('#city :gt(0)').remove();
+				$('#county :gt(0)').remove();
+				Request('/getcity/',BindCity,{Id:proviceid})
+			})
+			$('#city').change(function(){
+				proviceid=$('#provice').find('option:selected').val();
+				$('#county :gt(0)').remove();
+				cityid=$(this).find('option:selected').val();
+				Request('/getcounty/',BindCounty,{proId:proviceid,cityId:cityid});
+			})
+			
+			$('#request').click(function(){
+				alert($(this).find('option:selected').val());
+				alert($('#provice').find('option:selected').val());
+				alert($("#provice option:selected").val());
+			});
+
+			
+		});
+		function Init()
+		{
+			Request('/getprovince/',BindProvince,null)
+		}
+		function Request(url,func,data)
+		{
+			$.ajax({
+				type:'GET',
+				data:data,
+				url:url,
+				cache:false,
+				async:true,
+				success:func
+			});
+		}
+		
+		function BindProvince(data)
+		{
+			//console.log(data)
+			data=$.parseJSON(data)
+			$.each(data,function(i){
+				op="<option value="+i+">"+data[i]+"</option>";
+				$('#provice').append(op);
+			})
+		}
+		
+		function BindCity(data)
+		{
+			data=$.parseJSON(data)
+			$.each(data,function(i){
+				op="<option value="+i+">"+data[i]+"</option>";
+				$('#city').append(op);
+			})
+		}
+		
+		function BindCounty(data)
+		{
+			data=$.parseJSON(data)
+			$.each(data,function(i){
+				op="<option value="+i+">"+data[i]+"</option>";
+				$('#county').append(op);
+			})
+		}
+	</script>
+</body>
+</html>
